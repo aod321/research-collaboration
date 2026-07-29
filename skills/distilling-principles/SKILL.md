@@ -29,6 +29,36 @@ CARRIES A REAL INCIDENT, AND CHANGES THE NEXT ACTION.
 EVERYTHING ELSE STAYS A NOTE.
 ```
 
+## Where the notes live
+
+**This skill's own directory resolves to them**, so they are reachable from any
+repository you happen to be working in — you are almost never working inside the
+skills repo when the lesson happens.
+
+```
+<this skill's base directory>/../../docs/notes/<hostname>.md
+```
+
+The skill directory is a symlink into the checkout, so resolve it:
+
+```bash
+NOTES="$(readlink -f "$SKILL_DIR/../..")/docs/notes/$(hostname).md"
+```
+
+If that path does not exist, the skills repo is not installed here. **Say so and
+stop.** Do not invent a location — a note written somewhere nobody looks is the
+same as no note.
+
+**One file per machine.** Two machines appending to one file conflict on every
+push, and a shared dirty file blocks the auto-update pull. Nothing else ever
+writes your machine's file.
+
+**Append only.** Never edit an existing note to match what you later decided it
+meant — the value of the original is that it has not been interpreted yet.
+
+Syncing is automatic where `install.sh --cron` is set up: the machine's notes
+file is committed, pulled, and pushed every thirty minutes.
+
 ## Capture
 
 Ten seconds. Three lines. **Do not judge it, do not generalise it, do not
@@ -54,7 +84,7 @@ Notes are append-only. Never edit one to match what you later decided it meant.
 | Level | Evidence | Where it lives |
 |---|---|---|
 | **Note** | observed once | notes file, verbatim |
-| **Candidate** | recurred | one row in a red-flag or rationalisation table |
+| **Candidate** | recurred, **or** the owner explicitly asked that it be remembered | one row in a red-flag or rationalisation table, or a line in a profile |
 | **Rule** | recurred + real incident + changes the next action | a section in the skill body, or a profile |
 
 Most notes stop at level one, and should. A note that never recurs was probably
@@ -63,6 +93,17 @@ context, not principle.
 **Do not skip levels because a note feels important.** Feeling important at the
 moment of irritation is exactly the signal that is uncorrelated with being
 load-bearing.
+
+**One exception, and it is bounded.** When the owner explicitly says *remember
+this*, that counts as evidence — but as one weighting, not as a bypass. It
+promotes a note straight to **candidate**: a red-flag row, or a line in the
+relevant profile. Reaching the body still requires a second occurrence or a real
+incident.
+
+The reason it is not a full bypass: "remember this" is said in the moment, and
+the moment is exactly when everything feels important. The reason it is not
+ignored: an explicit request is more direct evidence of what matters than
+recurrence, which is only a proxy for it.
 
 ## Four conditions for promotion
 
@@ -272,6 +313,8 @@ Ten seconds at the time would have prevented the second one entirely.
 | Question | Answer |
 |---|---|
 | Something just went wrong. Now what? | Three lines in the notes: what happened, what it cost, candidate rule. Do not judge it. |
+| Where do notes go? | `<this skill's dir>/../../docs/notes/<hostname>.md`, resolved through the symlink. One file per machine, append only. |
+| I'm working in a different repo. | Same path. The skill resolves to its own checkout wherever you are. |
 | Does this note become a rule? | Has it recurred? Does it carry an incident? Would an agent act differently? Is it general? All four, or it stays a note. |
 | Five notes say similar things. | Pick the sharpest as the rule. The rest become red-flag rows. Keep all five verbatim. |
 | How do I write it so it survives? | What / why-with-incident / what-not-to-infer. Plus an enumerated forbidden list if it will be under pressure. |

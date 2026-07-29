@@ -14,7 +14,32 @@ is never finding out, because the budget went to process.
 that means exactly two things — say what actually ran, and do not leak. After a
 strong result, it means whatever could overturn it.
 
+Both failures are the same evasion of real data. One fabricates it, the other
+defers it:
+
+> 不能为了过验收不择手段 hack
+> 不能为了所谓严谨做好几个小时都不做实验，实验数据反馈是极其重要的，
+> 本质都是 data-driven
+
 **Violating the letter of this rule is violating the spirit of this rule.**
+
+## What This Does Not Govern
+
+This is for **research** — testing an idea whose answer is not known.
+
+When the task is building tooling against a known specification — a converter, a
+validator, a harness, a build system — the phase model does not apply. That work
+has a spec, its correctness *is* the deliverable, and the code will be
+maintained, so ordinary software discipline applies instead.
+
+**Hand off rather than improvise.** Software delivery is already covered by
+existing skills — `superpowers:test-driven-development`,
+`superpowers:systematic-debugging`, `superpowers:verification-before-completion`.
+Use them for that work. This skill does not restate them and does not compete
+with them.
+
+Say which one you are in. The Iron Law below governs research; applying it to
+tooling would be as wrong as applying TDD to an unproven idea.
 
 ## The Iron Law
 
@@ -27,6 +52,19 @@ SAY WHAT ACTUALLY RAN, AND DO NOT LEAK.
 
 Tests, refactors, docs, figures, review, diagnostics, and launching are not
 progress. They may be necessary. They are still not progress.
+
+**A progress report is not a completion.** Ending a turn with what you have been
+doing, when the deliverable is not done, is the most common way work stalls
+while appearing active. Either it is finished, or there is a specific blocker.
+
+> "配置写好了""任务启动了""训练 loss 很低"或"部分 episode 成功"**均不算完成**
+
+**Expected numbers are declared before the work, and a mismatch stops it.**
+
+> 每个 Task 有可复现的期望数字，对不上就停下来说，**不要调参去凑**
+
+**Do not broaden scope.** When told to conclude, conclude — with the exact fix,
+the exact result, or the current blocker. Not with three more things you noticed.
 
 ## Fail Fast. Silent Fallback Is The Enemy.
 
@@ -68,6 +106,18 @@ step, or runtime tensor contradicts what was claimed, **stop**. Do not warn and
 continue or record the run as a result. A mismatch is neither success nor
 failure of the mechanism — it is a run that did not happen.
 
+**On failure: stop and report. Do not patch and rerun.** A fix applied without
+review, on top of a failure nobody has seen, produces a second failure whose
+cause is now two things.
+
+**Failure leaves evidence.** Archive the partial output, the log tail, the exact
+command. Never delete an output without a diagnostic record, and never assume
+untracked means disposable — no `git clean`, no `reset`, no discarding what
+another process produced.
+
+**A missing critical artifact is not substitutable.** Stop and report. Do not
+reach for a different file that has a similar name and shape.
+
 **The only exception:** the user explicitly asks for resilient, graceful, or
 production-ready behaviour — *and* you have confirmed which failure modes are
 acceptable before adding any catch.
@@ -95,6 +145,24 @@ Leave out detail that would not change the reader's understanding or decision.
 
 **A report that opens with a hash has buried what the reader needed.**
 
+Three ways this goes wrong:
+
+**"Why" means why it is worth doing — not why it is possible.** Prefixing an
+action with a justification of its feasibility satisfies the letter and defeats
+the purpose.
+
+> 你刚才说了大量为什么，这个看似是在遵从我说的原则，但你的误区是……这里要问的
+> 应该是**为什么要做这件事，不是说为什么能做这件事**
+
+**No jargon, no invented vocabulary.** Shorthand generated during your own work
+is not language the reader shares.
+
+> "同一批代表 episode 并行比较 10/16/10 与历史 8+2" 不要说黑话，这是什么意思？
+
+**State what was *not* done.** A report of what happened, without the boundary
+of what did not, silently invites the reader to assume more ran than did — no
+training, no rollout, no commit, no formal result, whatever applies.
+
 ## The Two Floors
 
 Never traded away, in any phase. Everything else can wait.
@@ -110,6 +178,30 @@ and point at it afterward.
 
 Changing a mechanism because of a result is legitimate research. Changing it and
 still reporting under the old description is not.
+
+**A name must be bound to its configuration by the program, not by convention.**
+A directory, config, or run whose name asserts one setting while another is
+actually loaded is not a naming inconvenience — it misleads every log, report,
+and conclusion downstream. The name is a parseable check label; a parse that
+disagrees with the resolved configuration must terminate the command.
+
+> 一个名字说是 predicted BC 实际上跑起来在用另一组设定，这件事是如何发生的？
+> 如果永远避免以后发生？ … 我不管起什么名字，都能 fail-fast 快速发现名字不对、
+> 实际配置不对
+
+**Trust no self-report — derive from the evidence.** A validator must recompute
+every check and the overall verdict from the underlying artifacts; a passed flag
+in the object being checked is an input to be verified, never a conclusion to be
+accepted. Reviewing someone's work means opening the files, not reading their
+summary, and every finding cites `file:line`.
+
+**Wording must match the measured error.** A non-zero RMSE is not
+`bitwise identical`. Do not claim a property you have not verified, and do not
+fill a gap with an invented value.
+
+**A threshold you invented is not a contract.** An assistant's prior about what
+counts as close enough does not become an acceptance criterion by being written
+down confidently. The criterion is whatever the owner actually asked for.
 
 **Trust the artifact over any description of it.** When sources disagree about
 what ran:
@@ -196,6 +288,13 @@ Before launching anything, extra work is justified only if **both** hold:
 Say which run it unblocks. Tests, refactors, diagnostics, and review do not
 qualify merely because they are normally good practice.
 
+**A check that does not actually exercise the thing rules out nothing.** If a
+check earns its place, it runs the real path — the real container, the real
+subprocess, the real scoring. A static string assertion, a fully mocked call, or
+a silent skip when the hardware is absent is not cheaper verification; it is the
+appearance of verification. Mock only for targeted failure injection around a
+real path.
+
 This governs *extra* verification you propose. **It never excuses skipping an
 identity check the repository mandates** — those are part of the first floor, and
 they always run.
@@ -222,6 +321,35 @@ When the budget is gone, there are exactly three honest things to say:
 | the running command, its job id, when the first number lands | "I am writing tests" |
 | the number, what it was compared against, what it changes | "I am verifying" |
 | the specific missing file, tensor, credential, or hardware, and the smallest action that unblocks it | "I am refactoring" |
+
+## One Variable
+
+**One experiment changes one thing.** A run in which two things moved produces a
+result that attributes to neither. This is cheap to violate and expensive to
+detect afterwards — the numbers still look like data.
+
+> 刚才的实验不是同时变了多个变量么 … recurrent 梯度长度和 carry 同时变化了
+
+Before adding a second change: is the existing result already in the records?
+Repeating an experiment someone already ran is the other half of this waste.
+
+## In-Domain Before Out-Of-Domain
+
+**Verify the easy case works before claiming anything about the hard one.** A
+generalisation result on top of an unverified in-domain result is
+uninterpretable: a failure could be the generalisation or could be the whole
+pipeline.
+
+> 必须先看 S 地图（即训练地图）的表现 … 然后才谈得上进一步去测试和分析泛化地图
+
+The same shape applies to any claim of the form "it also works on X" — establish
+that it works at all, on the case it was built for, first.
+
+## Figures Are Evidence Or They Are Decoration
+
+A figure presented as the state of things must be drawn from **real data**. A
+schematic that illustrates what the result would look like is a diagram, and it
+must be labelled as one.
 
 ## Seeds
 
@@ -271,6 +399,16 @@ started?**
 | "I'll add a fallback so it keeps running" | Silent fallback is the single largest source of poisoned results here. Let it crash. |
 | "Wrap it in try/except to be safe" | Safe for whom? A masked exception costs weeks; a stack trace costs minutes. |
 | "GPU is unavailable, run on CPU" | Downgrade-and-continue is forbidden. Crash and let the human decide. |
+| "Let me report where I've got to" | A progress report is not a completion. Finished, or a specific blocker. |
+| "While I'm here I'll also fix..." | Do not broaden scope. Conclude with the exact fix, result, or blocker. |
+| "It probably failed because..." | Do not guess a cause. Open the script or the result file. |
+| "The number is close, I'll adjust the tolerance" | Expected numbers are declared before the work. A mismatch stops it. |
+| "The directory says it's the right config" | A name that is not program-bound to its configuration is misleading, not convenient. |
+| "The report says all checks passed" | Recompute the verdict from the artifacts. A passed flag is an input, not a conclusion. |
+| "I'll use the other file, it's the same shape" | A missing critical artifact is not substitutable. Stop and report. |
+| "I'll re-run it with a quick fix" | Stop and report first. A fix over an unseen failure makes the cause two things. |
+| "Here's a diagram of what it looks like" | If it is presented as the state of things, draw it from real data or label it a schematic. |
+| "You're right, that's a great point" | Do not agree to be agreeable. State the disagreement, or say nothing. |
 | "The directory name says it is the right checkpoint" | Names are the weakest evidence there is. Read the artifact. |
 | "It ran to completion, so it worked" | Completing is not verifying. Which check proves the claim? |
 

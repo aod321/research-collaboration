@@ -39,11 +39,26 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# --self-update is what the cron job runs: fast-forward only, then relink so
-# that skills added upstream get picked up without anyone visiting the machine.
+# --self-update is what the cron job runs: commit this machine's notes, pull,
+# push, then relink so that skills added upstream get picked up without anyone
+# visiting the machine.
+#
 # --ff-only means a dirty or diverged checkout fails loudly instead of merging.
+# Only this machine ever writes docs/notes/<hostname>.md, so an uncommitted note
+# never blocks the pull and a push never conflicts.
+#
+# A failed push leaves the commit local and the next run retries it. Nothing is
+# dropped; the failure is visible in the cron log.
 if [[ $SELF_UPDATE -eq 1 ]]; then
+  NOTES="docs/notes/$(hostname).md"
+  # --porcelain, not diff: on a new machine the notes file is untracked, and
+  # `git diff` does not see untracked files. That failure would be silent.
+  if [[ -f "$REPO/$NOTES" ]] && [[ -n "$(git -C "$REPO" status --porcelain -- "$NOTES")" ]]; then
+    git -C "$REPO" add "$NOTES"
+    git -C "$REPO" commit -q -m "notes($(hostname)): capture"
+  fi
   git -C "$REPO" pull --ff-only --quiet
+  git -C "$REPO" push --quiet || echo "push failed; commit is local, will retry" >&2
   exec "$REPO/install.sh"
 fi
 
@@ -51,6 +66,12 @@ say() { printf '%s\n' "$*"; }
 run() { if [[ $DRY_RUN -eq 1 ]]; then say "  would: $*"; else "$@"; fi; }
 
 [[ -d "$SRC" ]] || { echo "ERROR: no skills/ directory in $REPO" >&2; exit 1; }
+
+# This machine's notes inbox. One file per machine so that concurrent capture
+# never conflicts and a dirty note never blocks the auto-update pull.
+if [[ $DRY_RUN -eq 0 && $UNINSTALL -eq 0 && -d "$REPO/docs/notes" ]]; then
+  touch "$REPO/docs/notes/$(hostname).md"
+fi
 
 mapfile -t SKILLS < <(find "$SRC" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
 [[ ${#SKILLS[@]} -gt 0 ]] || { echo "ERROR: skills/ is empty" >&2; exit 1; }

@@ -68,6 +68,48 @@ the claim has been narrowed to what the evidence supports.
 
 **There is no obligation to complete a generic reviewer checklist.**
 
+## Making a comparison mean something
+
+These are the specific ways a confirmation experiment fails to support the claim
+it was built for.
+
+**A control differs in exactly one thing.** Same forward pass, same
+initialisation, same optimizer, same training budget — only the mechanism under
+test changes. Anything else and the difference attributes to nothing.
+
+**Comparing against nothing is not a control.** "Trained" versus "untrained"
+shows that training happened. To show the *mechanism* was necessary, the control
+must retain everything except that mechanism — a stop-gradient arm, a
+readout-only arm, a shuffled-input arm. If the shuffled version also works, the
+structure you claimed was doing the work was not.
+
+**Every arm gets the same budget.** Do not tune the learning rate and training
+length for the method you are advocating and run the baseline on defaults. The
+resulting gap is your tuning effort, not your mechanism.
+
+**Two overlapping curves are not evidence of small error.** A reviewer sees one
+line. Give at least one of: a residual inset, an RMSE, a maximum absolute error,
+an exact-match fraction.
+
+**Report the distribution, not the best run.** Where multiple runs exist, give
+the count, the median, an interquartile or bootstrap interval, and each run's
+final value. Selecting the best curve is selective reporting whether or not it
+was intended as such.
+
+**A criterion is defined in writing before it is applied.** "Adapts quickly" read
+off a curve is an impression. State the threshold and the measurement, then
+apply it.
+
+**Show cases that were chosen before the results.** Fix the episode or example
+IDs in advance, and pair them across arms. Picking the illustrative case after
+seeing the outcomes is the same defect as picking the best seed.
+
+**Do not write causation you have not isolated.** Without the ablation that
+removes the candidate cause, the honest phrasing is *consistent with*, not
+*caused by*. And a placeholder in a draft stays visibly a placeholder until the
+number exists — never write the expected conclusion in advance and plan to
+confirm it later.
+
 ## Calibration examples
 
 Examples, not a checklist. The criterion governs.

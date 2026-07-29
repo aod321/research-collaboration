@@ -69,6 +69,15 @@ cd ~/research-collaboration && ./install.sh --uninstall
 Removes the symlinks it created and the cron job. A real directory sitting at a
 target path is left alone rather than deleted.
 
+## Notes
+
+Working observations land in `docs/notes/<hostname>.md` — one file per machine,
+append only. With `--cron` installed they are committed, pulled, and pushed
+every thirty minutes, so capture on any machine reaches every other one.
+
+The `distilling-principles` skill resolves that path from its own directory, so
+an agent can write a note from whatever repository it happens to be working in.
+
 ## Adding a skill
 
 Put it under `skills/`, then re-run `./install.sh`. Conventions for writing one
