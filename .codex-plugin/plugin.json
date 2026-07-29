@@ -1,0 +1,35 @@
+{
+  "name": "research-collaboration",
+  "version": "0.1.0",
+  "description": "Working conventions for doing research with a coding agent: research phases, what counts as progress, how much verification is warranted before the first real result, and how to report it.",
+  "author": {
+    "name": "Zi Yin"
+  },
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "experiments",
+    "scientific-identity",
+    "prototyping",
+    "reporting",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "Research Collaboration",
+    "shortDescription": "Research phases, progress, and reporting conventions",
+    "longDescription": "Sets the research phase, defines what counts as progress, and governs how much verification is warranted before the first real result. Prevents an agent from spending its budget on tests, refactors, and multi-seed reproductions instead of producing a curve from real data.",
+    "developerName": "Zi Yin",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "I have an idea for a mechanism I want to try.",
+      "Implement this architecture and tell me whether it works."
+    ]
+  }
+}
