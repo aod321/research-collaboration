@@ -42,6 +42,34 @@ the minimum task-local context and the raw artifacts — not your hypothesis, no
 the suspected bug, not the conclusion you expect. Otherwise it reconstructs your
 answer and reports it back as independent confirmation.
 
+## Artifact ownership
+
+**Each agent writes only its own directory. One aggregator, running alone,
+writes anything shared.**
+
+```
+agent writes:       its own output dir, manifest, JSON, log, hashes
+agent never writes: the shared workbook, the shared index, the shared table
+aggregator:         single-threaded, rebuilds the shared view from the parts
+```
+
+A shared file with several writers corrupts quietly — the failure looks like a
+missing row, not like a crash — and it is the single most common way parallel
+work destroys its own results.
+
+The same rule covers the repository itself:
+
+> 你不是唯一在仓库中工作的代理；不要回退他人修改，适配当前状态。严禁 git add/
+> commit/clean，严禁停止、signal 或干扰任何训练/container/watcher，严禁修改
+> results 中已封存产物
+
+Concretely: do not revert another agent's edits, do not `git add`, `commit`, or
+`clean`, do not stop or signal another process, and do not modify a sealed
+result. Adapt to the working tree as you find it.
+
+A failed row is marked failed, not silently dropped and not retried into a
+different contract.
+
 ## Accounting
 
 ```

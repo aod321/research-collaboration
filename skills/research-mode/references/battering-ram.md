@@ -27,6 +27,13 @@ after a single failure.
 Moving a threshold from 0.3 to 0.4 without being able to say which failure
 explanation it tests is knocking on the wall at random.
 
+**Strike the mechanism, not the symptom.** A run of local patches, each
+addressing wherever the failure last surfaced, is the clearest sign the siege
+has degenerated — it looks like steady work and moves the door not at all.
+
+> 我怎么感觉你最近几条不本质呢，只是打补丁？没有从原因和机制分析出发，就像头疼
+> 医头，脚痛医脚，不通病理
+
 ## Hold the same question
 
 Never move the target silently. The measurement contract and the mechanism are

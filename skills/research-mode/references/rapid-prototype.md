@@ -42,6 +42,38 @@ semantics, or where verifying the old asset costs more than rebuilding a minimal
 one. Otherwise "reuse the cache" is satisfied to the letter by an archaeology
 expedition.
 
+## Let the small run find the problems
+
+The alternative to a cheap real run is sitting and imagining what might go
+wrong. That is unbounded, and it finds the failures you can already picture
+rather than the ones actually there.
+
+> 先用小代价的局部预实验/smoke 实验先跑一下 … 这样好处是不用费好几个小时反复想
+> 还有什么没有封堵的隐患，而是根据实际小试验情况，直接针对问题做处理
+
+A smoke run establishes that the chain executes. **It is not a scientific
+result**, and its passing is not evidence about the mechanism.
+
+**A cheap offline gate that fails is already a mechanism conclusion.** Do not
+escalate to the expensive run to confirm it.
+
+**A diagnostic that takes six hours is not a diagnostic.** If every question
+costs most of a day, the question is wrong or the harness is. Shrink it until it
+answers within a couple of hours.
+
+## Searching a space
+
+Explicitly asked to be remembered, so recorded here rather than in the body:
+
+> 自顶向下，树状展开，并行探索，面向高 ROI 收束
+
+Establish whether a direction works before refining any implementation detail
+inside it. Branch broadly, run independent branches in parallel, converge on the
+highest-information one rather than walking the tree evenly.
+
+Parameter search is legitimate; blind search is not. Spend where the evidence is
+strongest or the payoff largest, not uniformly.
+
 ## Stop condition
 
 Once the first interpretable direct result exists, report it and make the

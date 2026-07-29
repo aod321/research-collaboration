@@ -33,6 +33,44 @@ resource into a bottleneck.
 - destructive data operations
 - anything that would change the terminal acceptance criteria of the work
 
+## The owner confirms the result themselves
+
+**A conclusion is not established until the owner has reproduced it
+interactively.** Prepare the command, the viewer, the exact invocation — and
+then wait. Do not build the next thing on top of a result only you have seen.
+
+> 然后给新的 debug view 启动指令，我需要人工去复现确认。我复现确认后，再继续
+> 其他的
+
+This is not ceremony. Endpoint numbers hide behaviour that a human watching the
+thing run notices in seconds.
+
+**Visualisation is a diagnostic instrument, not a deliverable.** Produce the
+plot, the overlay, the trajectory — routinely, as a default output, not on
+request.
+
+> 可视化是重要工具，你作为一个语言模型你的图像抽象理解能力还有提升空间所以这里
+> 离不开可视化和人类的直觉参与
+
+## Designing before building
+
+When the work is deciding *what* to build rather than executing something
+already decided, the owner is in the loop at each step and the gates are real:
+
+```
+research and restate the problem in your own words
+  -> discuss, one question at a time
+  -> the owner says to write the plan
+  -> the plan is reviewed
+  -> the owner says to start
+```
+
+Do not compress these. This is the opposite of `OVERNIGHT_UNATTENDED`, where
+stopping for approval is the failure — here, proceeding without it is.
+
+Which one applies is determined by what the work is: choosing a direction, or
+executing a chosen one.
+
 ## Reporting cadence
 
 At formal updates and decision boundaries — not on every turn.
