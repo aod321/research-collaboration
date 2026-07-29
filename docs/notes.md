@@ -6,10 +6,18 @@ A note costs ten seconds. It does not have to be right, general, or well
 phrased — it has to exist. Insights arrive when work is busiest, and the ones
 that survive are otherwise just the ones that happened to arrive on a quiet day.
 
-To distil a note into a rule, it must pass both:
+Promotion and retirement both run through this file. Use the
+`distilling-principles` skill for the method; in short, a note earns the core
+only when it has recurred, carries a real incident, and changes the next action.
 
-1. does it change what an agent does next?
-2. is it general, or this project's instantiation of something general?
+When an observation contradicts an existing rule, say so in the note:
+
+```
+→ conflicts with: <rule name>
+```
+
+Conflict tickets accumulating under one rule is how it gets retired. There is no
+scheduled review.
 
 Structure and headings in English. **Quotes stay verbatim in whatever language
 they were said** — a paraphrase is already an interpretation, and the point of
@@ -384,6 +392,17 @@ Two things in it that the log-derived version lacked, and that make it work:
 Worth noting for the future: this rule already existed and was still violated,
 which is the same failure mode as section E. Written down is not the same as
 loaded.
+
+---
+
+## Retired
+
+Rules that were promoted and later withdrawn, kept with their original incident
+so that "tried and withdrawn" stays searchable rather than becoming a gap.
+
+*(none yet)*
+
+---
 
 ### F. Project-specific — deliberately not promoted
 

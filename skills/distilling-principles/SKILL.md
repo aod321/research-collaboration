@@ -143,20 +143,82 @@ failure. An agent does not think "I am about to bloat the scope". It thinks
 profiles are loaded when relevant. Do not duplicate between them — a rule
 restated in two places drifts, and then neither is trustworthy.
 
-## Pruning
+## Retirement
 
 A skill that only grows becomes a document nobody reads, which is the same as
-having no skill.
+having no skill. But **a scheduled review will not happen** — it is the same
+cost as scheduled capture, and that is precisely what already failed.
 
-- **Before adding a section, ask what it replaces.** Most additions are a
-  sharper version of something already there.
-- **A rule whose incident no longer applies should go.** This is why notes keep
-  the original incident: without it, in a year, nobody can tell whether a rule
-  is still load-bearing or is scar tissue.
-- **If two rules never both fire, they are one rule.** Merge them and keep the
-  sharper wording.
-- **A rule nobody has violated in months is either working or dead.** Check
-  which. Working rules get cited; dead ones just sit there.
+**Rules do not expire on a calendar. They expire on evidence.**
+
+### Retirement uses the same channel as promotion
+
+No separate ritual. A new observation naturally either reinforces or contradicts
+an existing rule, so spend the extra half-second when capturing it:
+
+```
+2026-08-15  the one-variable rule blocked me again, but these two are
+            genuinely coupled and separating them tests nothing
+            → conflicts with: one-variable-per-experiment
+```
+
+**Conflict tickets accumulating under one rule is the retirement signal.** It
+costs nothing extra, because the note was being written anyway.
+
+### Four signals
+
+| Signal | Meaning | Action |
+|---|---|---|
+| The incident no longer applies | the tool, flow, or failure mode is gone | demote |
+| Repeatedly and reasonably worked around | conflict tickets accumulate — the rule is too broad, or wrong | narrow, or demote |
+| Covered by something sharper | two rules overlap and one strictly dominates | merge, keep the sharper |
+| Never cited since promotion | either preventing violations, or dead weight | unresolvable — see below |
+
+The last one **cannot be told apart cheaply**, and pretending otherwise invents
+a procedure that does not work. A rule nobody breaks may be doing its job or may
+be scar tissue. Bound the damage instead: an obsolete-but-harmless rule costs
+context, not correctness.
+
+### The size cap is the forcing function
+
+This is what the line budget is actually for. It is not hygiene.
+
+Nothing creates pressure to remove a rule under normal conditions. But once the
+body is at its cap, **adding anything requires answering what it replaces** —
+and in that ranking, dead rules lose to live ones.
+
+The cap is the moment retirement becomes unavoidable. Without it, a skill only
+accumulates.
+
+### Demote, never delete
+
+Deleting a rule discards its incident. When the same failure returns, nobody
+knows a rule once existed for it, or why it was dropped.
+
+Keep a retired section in the notes:
+
+```
+### Retired
+
+**one-variable-per-experiment** — promoted 2026-07-30, retired 2026-09-14
+Original incident: <verbatim quote>
+Why retired: three conflict tickets, all cases where the variables were
+             genuinely coupled; the rule was too broad
+Superseded by: <the sharper rule, if any>
+```
+
+"Tried and withdrawn" then remains searchable knowledge rather than a gap.
+
+### Trigger points, not a schedule
+
+Review happens at these moments on its own:
+
+- the body hits its cap and forces a ranking
+- a new rule overlaps an existing one
+- a note is tagged as conflicting
+- the environment changes materially — new harness, new model, new toolchain
+- a retrospective import, where new material should be checked against existing
+  rules and not only mined for new ones
 
 ## Red Flags - STOP
 
@@ -172,6 +234,10 @@ having no skill.
   cost is a vague memory. Three lines now.
 - "This rule is important enough to skip the note stage" — that is how a skill
   fills with things one person felt once.
+- "I'll do a proper review of all the rules soon" — a scheduled review is the
+  same cost as scheduled capture, and that already failed. Retire on evidence.
+- "This rule is old, it should probably go" — age is not evidence. Conflict
+  tickets are.
 
 ## Common Rationalizations
 
@@ -210,4 +276,7 @@ Ten seconds at the time would have prevented the second one entirely.
 | Five notes say similar things. | Pick the sharpest as the rule. The rest become red-flag rows. Keep all five verbatim. |
 | How do I write it so it survives? | What / why-with-incident / what-not-to-infer. Plus an enumerated forbidden list if it will be under pressure. |
 | Body or profile? | Always applies → body. Phase- or mode-specific → profile. Never both. |
-| The skill is getting long. | For each section ask what it replaces, and whether its incident still applies.
+| The skill is getting long. | Good — that is the forcing function. For each section ask what it replaces and whether its incident still applies. |
+| A rule keeps getting in my way. | Tag the note as conflicting with it. Tickets accumulating under one rule is how it gets retired. |
+| Should I delete this rule? | Demote it to the retired section with its original incident and the reason. Never delete — the failure may return. |
+| When do I review? | Never on a schedule. When the cap forces a ranking, when a new rule overlaps an old one, when a note conflicts, or when the toolchain changes. |
