@@ -12,9 +12,14 @@ system, not a workflow engine, not a delivery pipeline.
 
 ## Rules for editing skills
 
-- `SKILL.md` frontmatter takes only `name`, `description`, `license`,
-  `allowed-tools`, `metadata`. `name` is hyphen-case, ≤64 chars.
-  `description` is ≤1024 chars and **must not contain angle brackets**.
+- **`SKILL.md` frontmatter carries `name` and `description` only.** Codex's
+  validator also permits `license`, `allowed-tools`, and `metadata`, but a
+  survey of every skill that works in Claude Code found none using `metadata` —
+  it is a Codex-only field and risks the skill being rejected by other
+  harnesses. Codex UI text belongs in `agents/openai.yaml`, which is where it is
+  read from anyway.
+- `name` is hyphen-case, ≤64 chars. `description` is ≤1024 chars and **must not
+  contain angle brackets**.
 - The `description` decides whether the skill loads at all. Write it in terms of
   triggering symptoms, not of the theory inside.
 - Keep `SKILL.md` well under 500 lines. Detail belongs in `references/`, loaded

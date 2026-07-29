@@ -1,8 +1,6 @@
 ---
 name: research-mode
 description: Use at the start of any research or experiment task, and whenever deciding what to do next in one - implementing a mechanism, launching training or evaluation, reporting progress or results, judging whether an idea has earned compute, or deciding whether to scale up. Sets the research phase, defines what counts as progress, and governs how much verification is warranted before the first real result. Use when work has produced no result for a long stretch, when tests or refactoring are crowding out experiments, or when someone proposes multi-seed runs, full ablations, or publication-grade rigor for an unproven idea.
-metadata:
-  short-description: Research phase, progress, and reporting conventions
 ---
 
 # Research Mode
