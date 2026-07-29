@@ -39,25 +39,71 @@ policy, and rationalization tables. Phase and execution profiles ship in
 
 ## Install
 
+Works for both Codex and Claude Code. Requires `bash` and `git`; nothing else.
+
 ```bash
-git clone <repo-url> ~/research-collaboration
-cd ~/research-collaboration && ./install.sh
+git clone https://github.com/aod321/research-collaboration.git ~/research-collaboration
+cd ~/research-collaboration
+./install.sh
 ```
 
-`install.sh` creates idempotent symlinks into `~/.codex/skills/` and
-`~/.claude/skills/`. Re-running it is safe.
+Expected output:
 
-Harnesses that read a plugin manifest can install the repo directly instead:
-`.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` both point at
-`./skills/`.
+```
+/home/you/.codex/skills
+  link research-mode
+/home/you/.claude/skills
+  link research-mode
+```
+
+`install.sh` symlinks each skill in `skills/` into `~/.codex/skills/` and
+`~/.claude/skills/`. It installs into whichever of the two exists — if only one
+harness is set up, the other line reads `skip ... not present`, which is fine.
+
+Preview before it touches anything with `./install.sh --dry-run`.
+
+### Verify
+
+Start a **new** session — neither harness re-scans skills mid-session — and:
+
+- **Codex**: `research-mode` appears in the skill list. Or invoke it directly
+  with `$research-mode`.
+- **Claude Code**: `research-mode` appears in the available-skills list. Or run
+  `/research-mode`.
+
+If it does not appear, check the link resolves:
+
+```bash
+ls -l ~/.codex/skills/research-mode ~/.claude/skills/research-mode
+cat ~/.codex/skills/research-mode/SKILL.md | head -3
+```
 
 ### Update
 
 ```bash
-cd ~/research-collaboration && git pull && ./install.sh
+cd ~/research-collaboration && git pull
 ```
 
-Symlink installs pick up changes with no further action.
+That is the whole update. The installed skills are symlinks into this checkout,
+so a pull updates them in place. Re-run `./install.sh` only when a skill is
+added or removed.
+
+### Uninstall
+
+```bash
+cd ~/research-collaboration && ./install.sh --uninstall
+```
+
+Removes only the symlinks it created. If a real directory sits at a target path,
+it is left alone rather than deleted.
+
+### Plugin manifests
+
+`.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` are present and
+point at `./skills/`, for harnesses that install a repo as a plugin rather than
+by symlink. **The symlink route above is the one that has been tested**; if you
+install via a plugin manifest instead, verify the skill loads before relying on
+it.
 
 ### Binding a repository to it
 

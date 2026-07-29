@@ -218,13 +218,13 @@ report. Small implementation choices need no announcement.
 
 ## Why This Matters
 
-From a real session on this project:
+From a real session that produced this skill:
 
 ```
-elapsed:            10+ hours
-spend:              large
-tests written:      thousands
-curves from real data: zero
+elapsed:                10+ hours
+spend:                  large
+tests written:          thousands
+curves from real data:  zero
 ```
 
 A negative result was being reproduced across multiple seeds to make it
