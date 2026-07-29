@@ -435,15 +435,23 @@ its own logging tax.
 ## 10. What ships
 
 ```
-~/.codex/skills/research-mode/
-  SKILL.md                                    the SOP; always loaded when triggered
-  references/rng-policy.md                    full seed policy
-  references/rapid-prototype.md               phase profile
-  references/day-interactive-single-thread.md execution profile
-  agents/openai.yaml                          UI metadata
+skills/research-mode/
+  SKILL.md                              the SOP; loaded when the skill triggers
+  agents/openai.yaml                    UI metadata
+  references/
+    maieutic.md                         phase profiles
+    rapid-prototype.md
+    battering-ram.md
+    confirmation.md
+    day-interactive.md                  execution profiles
+    overnight-unattended.md
+    single-thread.md
+    subagent-driven.md
+    rng-policy.md                       full seed policy
 ```
 
-Read one phase profile and one execution profile; do not preload everything.
+All four phases and both execution axes ship. Read one phase profile and one
+profile per execution axis; do not preload everything.
 Examples inside a profile are calibration, **not a checklist** — the criterion
 governs, and uncovered cases are judged by the criterion and its purpose.
 
@@ -487,15 +495,21 @@ Validation is skill-creator validation plus real use. Staged agent evaluations
 are deliberately not part of this — building an evaluation harness before knowing
 whether the skill helps would be this framework's own first counterexample.
 
-`MAIEUTIC`, `BATTERING_RAM`, and `CONFIRMATION` phase profiles, and the
-`OVERNIGHT_UNATTENDED` and `SUBAGENT_DRIVEN` execution profiles, are not written.
-Their criteria and stop conditions are in Section 5 and bind already. They get
-written when real use shows they are needed, in that order, one at a time.
+All four phase profiles and all four execution profiles ship. An earlier plan
+gated the later ones on demonstrated need; that was dropped, because a phase
+present in the routing table but absent from `references/` leaves an agent
+knowing it has entered `BATTERING_RAM` and nothing about how to behave there.
+Refinement now happens in use, against real work, rather than by withholding
+the profile.
 
-When `research-confirmation` is eventually split into its own skill, it should
-carry `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, so that
-"do not self-invoke" is enforced by the loader rather than by prose a
-conservative agent can rationalize past.
+Remaining work is refinement, not construction:
+
+- calibration examples in each profile are first-draft and should be replaced by
+  cases actually encountered;
+- if `CONFIRMATION` is ever split into its own skill, it should carry
+  `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, so "do not
+  self-invoke" is enforced by the loader rather than by prose a conservative
+  agent can rationalize past.
 
 ## 12. Conceptual anchors (non-normative)
 

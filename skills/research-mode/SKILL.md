@@ -247,13 +247,24 @@ to iterate on. What came back was a still-running test suite.
 
 ## Profiles
 
-Read only what applies now; do not preload everything.
+**Read one phase profile and one profile per execution axis. Do not preload
+everything.**
 
-| Axis | File |
+| Phase | Profile | Its criterion |
+|---|---|---|
+| `MAIEUTIC` | `references/maieutic.md` | Would the answer change the mechanism, endpoint, run, or budget? |
+| `RAPID_PROTOTYPE` | `references/rapid-prototype.md` | The admission test. |
+| `BATTERING_RAM` | `references/battering-ram.md` | Is this the backswing, or building a new ram? |
+| `CONFIRMATION` | `references/confirmation.md` | Would this threat overturn the claim, and is it worth the cost? |
+
+| Execution | Profile |
 |---|---|
-| Phase | `references/rapid-prototype.md` |
-| Execution | `references/day-interactive-single-thread.md` |
+| `DAY_INTERACTIVE` | `references/day-interactive.md` |
+| `OVERNIGHT_UNATTENDED` | `references/overnight-unattended.md` |
+| `SINGLE_THREAD` | `references/single-thread.md` |
+| `SUBAGENT_DRIVEN` | `references/subagent-driven.md` |
 
-Profiles for the other phases and execution modes are not written yet; the
-criteria above still apply. Examples inside a profile are calibration, **not a
-checklist** — the criterion governs.
+Also: `references/rng-policy.md` when seeds are in question.
+
+Examples inside a profile are calibration, **not a checklist** — the criterion
+governs, and uncovered cases are judged by the criterion and its purpose.
