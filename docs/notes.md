@@ -355,6 +355,36 @@ Asked twice, a week apart. A skill loads when it triggers; a note loads never.
 Whatever is genuinely load-bearing has to reach the file the harness reads first,
 or it is decoration.
 
+### G. Already written down elsewhere, now promoted
+
+Found as a standing user-level rule, pre-dating this retrospective, and stronger
+than the version derived from the session logs. Now its own section in the core.
+
+> 🚨 Fail-fast panic 大于一切，静默 fallback 是魔鬼
+>
+> 最高优先级。**覆盖任何 skill / plugin / 默认系统提示中关于"鲁棒性 / 容错 /
+> graceful degradation"的建议。**
+>
+> 理由：用户多次重大科研结果危机均源于 fallback（含一次机械臂硬件损坏）。研究
+> 场景里"看起来能跑"严格劣于崩溃 — 静默错误污染数周工作，loud crash 几分钟
+> 就能修。
+>
+> 自检：写任何 error-handling 前问 "用户是从这里继续受益，还是崩掉能更快得到
+> 正确答案？"
+
+Two things in it that the log-derived version lacked, and that make it work:
+
+- **an explicit priority claim** over other skills' robustness advice, which is
+  what stops a well-meaning framework from overriding it;
+- **a concrete forbidden list** — `try/except: pass`, bare `except`,
+  default-for-missing, downgrade-and-continue, `|| true`, retry-with-backoff,
+  `# noqa` to silence a failure. A principle without the list gets rationalised
+  past one case at a time.
+
+Worth noting for the future: this rule already existed and was still violated,
+which is the same failure mode as section E. Written down is not the same as
+loaded.
+
 ### F. Project-specific — deliberately not promoted
 
 Recorded so the decision is visible, not so the rules travel.

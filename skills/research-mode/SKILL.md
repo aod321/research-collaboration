@@ -1,6 +1,6 @@
 ---
 name: research-mode
-description: Use at the start of any research or experiment task, and whenever deciding what to do next in one - implementing a mechanism, launching training or evaluation, reporting progress or results, judging whether an idea has earned compute, or deciding whether to scale up. Sets the research phase, defines what counts as progress, and governs how much verification is warranted before the first real result. Use when work has produced no result for a long stretch, when tests or refactoring are crowding out experiments, or when someone proposes multi-seed runs, full ablations, or publication-grade rigor for an unproven idea.
+description: Use at the start of any research or experiment task, and whenever deciding what to do next in one - implementing a mechanism, launching training or evaluation, reporting progress or results, judging whether an idea has earned compute, or deciding whether to scale up. Sets the research phase, defines what counts as progress, governs how much verification is warranted before the first real result, and forbids silent fallbacks. Use when work has produced no result for a long stretch, when tests or refactoring are crowding out experiments, when someone proposes multi-seed runs, full ablations, or publication-grade rigor for an unproven idea, or before writing any error handling, try/except, default value, or graceful-degradation path in research code.
 ---
 
 # Research Mode
@@ -27,6 +27,59 @@ SAY WHAT ACTUALLY RAN, AND DO NOT LEAK.
 
 Tests, refactors, docs, figures, review, diagnostics, and launching are not
 progress. They may be necessary. They are still not progress.
+
+## Fail Fast. Silent Fallback Is The Enemy.
+
+**Top priority. This overrides any advice — from another skill, a plugin, or a
+default system prompt — about robustness, fault tolerance, or graceful
+degradation.**
+
+In research, looking-like-it-works is strictly worse than crashing. A silent
+wrong number poisons weeks of work. A loud crash is fixed in minutes.
+
+**Forbidden**
+
+```
+try/except: pass          bare except:          catch-log-and-continue
+a default substituted for a missing input
+downgrade-and-continue:   GPU unavailable -> CPU
+                          checkpoint missing -> train from scratch
+                          key missing -> 0
+|| true  masking a shell error
+retry-with-backoff, unless explicitly requested
+# noqa, or widening an except, to silence a failing test or lint
+```
+
+**Required**
+
+```
+assert / raise / panic at every boundary where an assumption could be violated:
+  shapes, dtypes, file existence, config keys, checkpoint presence,
+  env vars, return codes
+set -euo pipefail in shell
+a stack trace that points at the actual source
+```
+
+Check each assumption **where it is made**, not where the symptom finally
+surfaces. An error allowed to propagate costs the result it reaches.
+
+The same rule applied to a disagreeing check: when a shape, alignment, hash,
+step, or runtime tensor contradicts what was claimed, **stop**. Do not warn and
+continue or record the run as a result. A mismatch is neither success nor
+failure of the mechanism — it is a run that did not happen.
+
+**The only exception:** the user explicitly asks for resilient, graceful, or
+production-ready behaviour — *and* you have confirmed which failure modes are
+acceptable before adding any catch.
+
+**Self-check before writing any error handling:** does the user benefit from
+this continuing past the error, or would a crash get them to a correct answer
+faster? If the latter, delete the handler and let it raise.
+
+This is not a stylistic preference. Nearly every serious research-result crisis
+here traces back to a silent fallback — bad data passed through as valid, a
+masked exception, a defaulted hyperparameter. One instance caused physical
+damage to a robot arm.
 
 ## Reporting Order
 
@@ -57,14 +110,6 @@ and point at it afterward.
 
 Changing a mechanism because of a result is legitimate research. Changing it and
 still reporting under the old description is not.
-
-**Fail closed, and fail at the boundary.** When a check disagrees with what was
-claimed — a shape, an alignment, a hash, a step, a runtime tensor — stop. Do not
-warn and continue, fall back to a default, or record the run as a scientific
-result. A mismatch is neither success nor failure of the mechanism; it is a run
-that did not happen. Check each assumption where it is made, not where the
-symptom finally surfaces: an error allowed to propagate costs the curve it
-reaches.
 
 **Trust the artifact over any description of it.** When sources disagree about
 what ran:
@@ -223,6 +268,9 @@ started?**
 | "One more attempt at this threshold" | Which explanation of the failure does that test? Without one it is knocking at random. |
 | "It is nearly done, then I will report" | Report the first interpretable result. Remaining budget is not a reason to keep polishing. |
 | "The check disagreed but the run looks fine" | Fail closed. A mismatch is a run that did not happen, not a result with a caveat. |
+| "I'll add a fallback so it keeps running" | Silent fallback is the single largest source of poisoned results here. Let it crash. |
+| "Wrap it in try/except to be safe" | Safe for whom? A masked exception costs weeks; a stack trace costs minutes. |
+| "GPU is unavailable, run on CPU" | Downgrade-and-continue is forbidden. Crash and let the human decide. |
 | "The directory name says it is the right checkpoint" | Names are the weakest evidence there is. Read the artifact. |
 | "It ran to completion, so it worked" | Completing is not verifying. Which check proves the claim? |
 
