@@ -8,7 +8,7 @@
     {
       "name": "research-collaboration",
       "description": "Working conventions for doing research with a coding agent: research phases, what counts as progress, and how much verification is warranted before the first real result",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./",
       "author": {
         "name": "Zi Yin"

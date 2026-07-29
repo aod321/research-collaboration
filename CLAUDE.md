@@ -10,6 +10,12 @@ system, not a workflow engine, not a delivery pipeline.
 
 **Every clause must change what an agent does next, or it does not belong.**
 
+**For how an observation becomes a rule** — capture, when it has earned
+promotion, how to merge several notes without averaging them into mush, how to
+write a rule that resists being argued past, and when to prune — use the
+`distilling-principles` skill. The conventions below are only the mechanics of
+this repository.
+
 ## Rules for editing skills
 
 - **`SKILL.md` frontmatter carries `name` and `description` only.** Codex's

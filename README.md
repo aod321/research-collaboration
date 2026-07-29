@@ -12,6 +12,7 @@ do not.** For what the skills actually say, read them.
 | Skill | Read |
 |---|---|
 | `research-mode` | [`skills/research-mode/SKILL.md`](skills/research-mode/SKILL.md) |
+| `distilling-principles` | [`skills/distilling-principles/SKILL.md`](skills/distilling-principles/SKILL.md) |
 
 ## Install
 

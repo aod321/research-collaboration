@@ -1,0 +1,4 @@
+interface:
+  display_name: "Distilling Principles"
+  short_description: "Turn working notes into durable rules"
+  default_prompt: "Use $distilling-principles to turn this lesson into a rule worth keeping."
