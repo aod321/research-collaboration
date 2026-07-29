@@ -28,8 +28,12 @@ this repository.
   contain angle brackets**.
 - The `description` decides whether the skill loads at all. Write it in terms of
   triggering symptoms, not of the theory inside.
-- Keep `SKILL.md` well under 500 lines. Detail belongs in `references/`, loaded
-  on demand, and must not be duplicated between the two.
+- **Split by kind, not by size.** The decision procedure and always-on rules go
+  in `SKILL.md`; per-phase detail, templates, and background go in
+  `references/`, loaded on demand. Never duplicate between the two.
+  There is no line target — mature skills run from 60 to 700 lines of body, and
+  the longest bodies also carry the longest references. Moving content out to
+  hit a number makes it harder to reach without reducing anything.
 - No `README.md`, `CHANGELOG.md`, or other auxiliary documentation *inside* a
   skill directory. The skill contains what the agent needs to do the job, and
   nothing about how the skill came to exist.

@@ -1,6 +1,6 @@
 ---
 name: distilling-principles
-description: Use when turning working experience into durable rules - when something just went wrong or right and there is a lesson in it, when reviewing accumulated notes to decide what deserves promotion, when adding a rule to a skill, when a skill is getting long and needs pruning, or when asked to write or update a skill. Covers how to capture an observation in ten seconds, when a fragment has earned promotion, how to merge several observations without averaging them into mush, and how to write a rule that resists being rationalised past.
+description: Use when something just went wrong or right and there is a lesson in it, when about to say "I should remember this" or "next time I will", when reviewing accumulated notes to decide what deserves promotion, when adding or changing a rule in a skill, when a skill is getting long, when a rule keeps getting worked around or argued with, when the same mistake has now happened twice, and when asked to write or update a skill.
 ---
 
 # Distilling Principles
@@ -146,12 +146,36 @@ balanced. "Do not let irrelevant randomness crowd out the main budget" is
 correct and inert. "跑五个 seed 去严谨地证明一个负面结果，这有什么意义？" is the
 same rule with teeth.
 
+## Choose the form before the wording
+
+**The form that bulletproofs one kind of failure backfires on another.** Classify
+what actually went wrong first.
+
+| The failure | Right form |
+|---|---|
+| Knows the rule, skips it under pressure | prohibition + rationalisation table + red flags |
+| Complies, but the output has the wrong shape | **positive recipe** — state what the output IS, its parts, in order |
+| Omits a required element from something already produced | a REQUIRED slot in the template being filled |
+| Behaviour should depend on a condition | a conditional on an **observable** predicate |
+
+A prohibition invites negotiation under a competing incentive — the agent argues
+with "don't X". A recipe leaves nothing to negotiate.
+
+**This interacts with picking the sharpest wording.** The sharpest form of a
+discipline rule is a prohibition, and that is correct. The sharpest form of a
+shaping rule is a recipe, and reaching for the prohibition because it sounds more
+forceful makes it worse.
+
+Full craft — descriptions, loophole closing, cross-referencing, naming, language
+register, anti-patterns — is in `references/authoring.md`. **BACKGROUND:**
+`superpowers:writing-skills` is the fuller and better-tested treatment.
+
 ## Writing the rule
 
 Three parts. All three, or it will be argued past.
 
 ```
-WHAT     the rule, in the sharpest available wording
+WHAT     the rule, in the sharpest form for its failure type
 WHY      the specific failure it prevents - with the incident, if there is one
 LIMIT    what must NOT be inferred from it
 ```
@@ -220,16 +244,24 @@ a procedure that does not work. A rule nobody breaks may be doing its job or may
 be scar tissue. Bound the damage instead: an obsolete-but-harmless rule costs
 context, not correctness.
 
-### The size cap is the forcing function
+### The promotion bar is the forcing function
 
-This is what the line budget is actually for. It is not hygiene.
+An earlier version of this used a hard line cap on the body. That was wrong —
+mature skills run from 60 to 700 lines with no sign of a managed target, and the
+longest bodies also carry the longest references. Length is not what anyone is
+managing, and a cap mostly forces content into references where it is harder to
+reach without reducing anything.
 
-Nothing creates pressure to remove a rule under normal conditions. But once the
-body is at its cap, **adding anything requires answering what it replaces** —
-and in that ranking, dead rules lose to live ones.
+**The real brake is upstream.** If only things that recurred, carry an incident,
+and change the next action get in, growth is slow enough that the body does not
+need policing. A cap is what you reach for when the promotion bar is too weak.
 
-The cap is the moment retirement becomes unavoidable. Without it, a skill only
-accumulates.
+What remains, and is enough:
+
+- **Before adding a section, name what it replaces.** Most additions are a
+  sharper version of something already present.
+- **Split by kind, not by size.** Decision procedure and always-on rules in the
+  body; per-phase detail, templates, and background in references.
 
 ### Demote, never delete
 
