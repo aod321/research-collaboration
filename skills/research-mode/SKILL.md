@@ -58,6 +58,36 @@ and point at it afterward.
 Changing a mechanism because of a result is legitimate research. Changing it and
 still reporting under the old description is not.
 
+**Fail closed, and fail at the boundary.** When a check disagrees with what was
+claimed — a shape, an alignment, a hash, a step, a runtime tensor — stop. Do not
+warn and continue, fall back to a default, or record the run as a scientific
+result. A mismatch is neither success nor failure of the mechanism; it is a run
+that did not happen. Check each assumption where it is made, not where the
+symptom finally surfaces: an error allowed to propagate costs the curve it
+reaches.
+
+**Trust the artifact over any description of it.** When sources disagree about
+what ran:
+
+```
+recorded runtime tensor / actual input
+> checkpoint or artifact metadata
+> resolved runtime config
+> the identity string parsed from a name
+> directory names, labels, nicknames
+```
+
+**Do not report in nicknames.** A shorthand that was convenient in conversation
+is not a description of what ran. Expand it, or point at the record.
+
+**Mark what did not enter the pipeline.** Any number shown beside a result — in
+a report, a plot, or a debug view — must make clear whether it entered the
+evaluated path. Never introduce a diagnostic that is absent from the pipeline
+being evaluated without labelling it as such.
+
+**A command that starts is not a command that is verified.** Neither is one that
+runs to completion without the relevant checks having passed.
+
 **Do not hack the result.** No evaluation-set information in training,
 normalization, checkpoint selection, or hyperparameter selection. No changing a
 definition to fit a result. No keeping only favorable runs, retrying until it
@@ -192,6 +222,9 @@ started?**
 | "I cannot measure token spend here" | Estimate it. Off by 2x still catches 10x. |
 | "One more attempt at this threshold" | Which explanation of the failure does that test? Without one it is knocking at random. |
 | "It is nearly done, then I will report" | Report the first interpretable result. Remaining budget is not a reason to keep polishing. |
+| "The check disagreed but the run looks fine" | Fail closed. A mismatch is a run that did not happen, not a result with a caveat. |
+| "The directory name says it is the right checkpoint" | Names are the weakest evidence there is. Read the artifact. |
+| "It ran to completion, so it worked" | Completing is not verifying. Which check proves the claim? |
 
 ## Letter vs Spirit
 
