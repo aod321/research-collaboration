@@ -78,15 +78,44 @@ ls -l ~/.codex/skills/research-mode ~/.claude/skills/research-mode
 cat ~/.codex/skills/research-mode/SKILL.md | head -3
 ```
 
+### Deploying to many machines
+
+One command per machine. It installs into whichever harnesses that machine has,
+and sets up a half-hourly auto-update:
+
+```bash
+git clone https://github.com/aod321/research-collaboration.git ~/research-collaboration && \
+  ~/research-collaboration/install.sh --cron
+```
+
+After that, pushing to this repo is the whole release process. Every machine
+pulls within thirty minutes and relinks, so **skills added later appear without
+anyone visiting the machine.**
+
+The cron job runs `install.sh --self-update`, which is `git pull --ff-only`
+followed by a relink. `--ff-only` matters: a machine with local edits or a
+diverged branch fails loudly instead of silently merging. Check one with:
+
+```bash
+crontab -l | grep research-collaboration
+~/research-collaboration/install.sh --self-update    # run it by hand once
+```
+
 ### Update
+
+Without cron, updating is:
 
 ```bash
 cd ~/research-collaboration && git pull
 ```
 
-That is the whole update. The installed skills are symlinks into this checkout,
-so a pull updates them in place. Re-run `./install.sh` only when a skill is
+That is the whole update — installed skills are symlinks into this checkout, so
+a pull updates them in place. Re-run `./install.sh` only when a skill has been
 added or removed.
+
+**Sessions snapshot skills at load time.** A running session keeps the version it
+started with; start a new one, or re-invoke the skill explicitly, to pick up
+changes.
 
 ### Uninstall
 
@@ -94,8 +123,8 @@ added or removed.
 cd ~/research-collaboration && ./install.sh --uninstall
 ```
 
-Removes only the symlinks it created. If a real directory sits at a target path,
-it is left alone rather than deleted.
+Removes the symlinks it created and the cron job. If a real directory sits at a
+target path, it is left alone rather than deleted.
 
 ### Plugin manifests
 
